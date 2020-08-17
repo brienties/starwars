@@ -7,6 +7,19 @@ use Illuminate\Support\Facades\Http;
 
 class SpeciesController extends Controller
 {
+
+    /**
+     * @var \Illuminate\Http\Client\PendingRequest
+     */
+    private $response;
+
+    public function __construct()
+    {
+        $this->response = Http::withOptions([
+            'base_uri' => env('API_URL')
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,9 +27,7 @@ class SpeciesController extends Controller
      */
     public function index()
     {
-        $response = Http::get(env('API_URL') . 'species/');
-
-        return $response->json();
+        return view('species.index')->with('response', $this->response->get('species')->json());
     }
 
     /**

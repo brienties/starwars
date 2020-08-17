@@ -14,7 +14,12 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                        <ul>
+                            <li><a href="{{ route('home') }}">Home</a></li>
+                            <li><a href="{{ route('peoples.index') }}">Peoples</a></li>
+                            <li><a href="{{ route('planets.index') }}">PLanets</a></li>
+                            <li><a href="{{ route('species.index') }}">Species</a></li>
+                        </ul>
                 </div>
             </div>
         </div>

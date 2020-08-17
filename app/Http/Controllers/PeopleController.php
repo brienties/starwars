@@ -26,8 +26,6 @@ class PeopleController extends Controller
      */
     public function index()
     {
-
-
         return view('peoples.index')->with('response', $this->response->get('people')->json());
     }
 
