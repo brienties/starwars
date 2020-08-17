@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class PlanetController extends Controller
 {
@@ -13,7 +14,9 @@ class PlanetController extends Controller
      */
     public function index()
     {
-        //
+        $response = Http::get(env('API_URL') . 'planets/');
+
+        return $response->json();
     }
 
     /**

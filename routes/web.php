@@ -17,4 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('people', "PeopleController@show");
+Route::get('people', "PeopleController@index");
+Route::get('planets', "PlanetController@index");
+Route::get('species', "SpeciesController@index");
