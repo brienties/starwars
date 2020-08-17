@@ -17,6 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('people', "PeopleController@index");
-Route::get('planets', "PlanetController@index");
-Route::get('species', "SpeciesController@index");
+Auth::routes(['register' => false]);
+
+Route::get('/peoples', "PeopleController@index")->middleware('auth');
+Route::get('/planets', "PlanetController@index")->middleware('auth');
+Route::get('/species', "SpeciesController@index")->middleware('auth');
+
+
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');

@@ -8,15 +8,27 @@ use Illuminate\Support\Facades\Http;
 class PeopleController extends Controller
 {
     /**
+     * @var \Illuminate\Http\Client\PendingRequest
+     */
+    private $response;
+
+    public function __construct()
+    {
+        $this->response = Http::withOptions([
+            'base_uri' => env('API_URL')
+        ]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $response = Http::get(env('API_URL') . 'people/');
 
-        return $response->json();
+
+        return view('peoples.index')->with('response', $this->response->get('people')->json());
     }
 
     /**
