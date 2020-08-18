@@ -23,7 +23,7 @@ Auth::routes(['register' => false]);
 Route::group(['middleware' => 'auth'], function()
 {
     Route::get('/home', 'HomeController@index')->name('home');
-    Route::get('/peoples', "PeopleController@index")->name('peoples.index');
+    Route::get('/people', "PeopleController@index")->name('people.index');
     Route::get('/planets', "PlanetController@index")->name('planets.index');
     Route::get('/species', "SpeciesController@index")->name('species.index');
 });
