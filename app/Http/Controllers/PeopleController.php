@@ -48,9 +48,11 @@ class PeopleController extends Controller
 
             $people_id = (int) filter_var($currData['url'], FILTER_SANITIZE_NUMBER_INT);
             $homeworld = (int) filter_var($currData['homeworld'], FILTER_SANITIZE_NUMBER_INT);
-            $species   = (int) filter_var(isset($currData['species'][0]) ? $currData['species'][0] : null, FILTER_SANITIZE_NUMBER_INT);
 
-            $data             = People::query()->firstOrCreate(['planet_id' => $people_id]);
+            $species_check = isset($currData['species'][0]) ? $currData['species'][0] : null;
+            $species       = (int) filter_var($species_check, FILTER_SANITIZE_NUMBER_INT);
+
+            $data             = People::query()->firstOrCreate(['people_id' => $people_id]);
             $data->people_id  = $people_id;
             $data->name       = $currData['name'];
             $data->birth_year = $currData['birth_year'];
@@ -65,7 +67,6 @@ class PeopleController extends Controller
             $data->url        = $currData['url'];
 
             $data->save();
-
         });
     }
 
@@ -76,7 +77,8 @@ class PeopleController extends Controller
      */
     public function index()
     {
-        $response = $this->pullPeopleSummary(2);
+        $response = $this->pullPeopleSummary(1);
+//        dd($response);
         $numPages = $response['count'] / count($response['results']);
         $this->storePeopleData($response);
 
@@ -87,7 +89,6 @@ class PeopleController extends Controller
         }
 
         die;
-
 
         return view('people.index')->with('response', $this->response->body());
     }

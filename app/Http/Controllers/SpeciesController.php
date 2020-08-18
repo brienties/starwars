@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Species;
 
 class SpeciesController extends Controller
 {
@@ -16,8 +17,54 @@ class SpeciesController extends Controller
     public function __construct()
     {
         $this->response = Http::withOptions([
-            'base_uri' => env('API_URL')
+            'base_uri' => env('API_URL'),
         ]);
+    }
+
+    /**
+     * Pull all the data in the request
+     *
+     * @param $page
+     *
+     * @return array|mixed
+     */
+    protected function pullSpeciesSummary($page)
+    {
+        //Function makes the http request and returns the response from the swapi per page
+        $request  = Http::get(env('API_URL') . 'species/?page=' . $page);
+        $response = $request->json();
+
+        return $response;
+    }
+
+    /***
+     * Stores the planet data in the database with the given pagenumber
+     *
+     * @param $response
+     */
+    public function storeSpeciesData($response)
+    {
+        collect($response['results'])->each(function ($currData) {
+
+            $species_id = (int) filter_var($currData['url'], FILTER_SANITIZE_NUMBER_INT);
+            $homeworld  = (int) filter_var($currData['homeworld'], FILTER_SANITIZE_NUMBER_INT);
+
+            $data                   = Species::query()->firstOrCreate(['species_id' => $species_id]);
+            $data->species_id       = $species_id;
+            $data->name             = $currData['name'];
+            $data->classification   = $currData['classification'];
+            $data->designation      = $currData['designation'];
+            $data->average_height   = $currData['average_height'];
+            $data->average_lifespan = $currData['average_lifespan'];
+            $data->eye_colors       = $currData['eye_colors'];
+            $data->hair_colors      = $currData['hair_colors'];
+            $data->skin_color       = $currData['skin_colors'];
+            $data->language         = $currData['language'];
+            $data->homeworld        = $homeworld;
+            $data->url              = $currData['url'];
+
+            $data->save();
+        });
     }
 
     /**
@@ -27,72 +74,18 @@ class SpeciesController extends Controller
      */
     public function index()
     {
-        return view('species.index')->with('response', $this->response->get('species')->json());
-    }
+        $response = $this->pullSpeciesSummary(1);
+        $numPages = $response['count'] / count($response['results']);
+        $this->storeSpeciesData($response);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        for ($i = 2; $i < $numPages; $i++)
+        {            //start on 2, cause we already have fetched page 1
+            $response = $this->pullSpeciesSummary($i);   //other pages
+            $this->storeSpeciesData($response);
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        die;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return view('people.index')->with('response', $this->response->body());
     }
 }

@@ -15,6 +15,18 @@ class CreateSpeciesTable extends Migration
     {
         Schema::create('species', function (Blueprint $table) {
             $table->id();
+            $table->integer('species_id')->unique();
+            $table->string('name')->nullable();
+            $table->string('classification')->nullable();
+            $table->string('designation')->nullable();
+            $table->string('average_height')->nullable();
+            $table->string('average_lifespan')->nullable();
+            $table->string('eye_colors')->nullable();
+            $table->string('hair_colors')->nullable();
+            $table->string('skin_color')->nullable();
+            $table->string('language')->nullable();
+            $table->integer('homeworld')->nullable();
+            $table->string('url')->nullable();
             $table->timestamps();
         });
     }
