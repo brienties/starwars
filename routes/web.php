@@ -19,11 +19,16 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
-Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
-Route::get('/peoples', "PeopleController@index")->name('peoples.index')->middleware('auth');
-Route::get('/planets', "PlanetController@index")->name('planets.index')->middleware('auth');
-Route::get('/species', "SpeciesController@index")->name('species.index')->middleware('auth');
+Route::group(['middleware' => 'auth'], function()
+{
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/peoples', "PeopleController@index")->name('peoples.index');
+    Route::get('/planets', "PlanetController@index")->name('planets.index');
+    Route::get('/species', "SpeciesController@index")->name('species.index');
+});
+
+
 
 
 

@@ -4,19 +4,69 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\People;
 
 class PeopleController extends Controller
 {
-    /**
-     * @var \Illuminate\Http\Client\PendingRequest
-     */
-    private $response;
+//    /**
+//     * @var \Illuminate\Http\Client\PendingRequest
+//     */
+//    private $response;
+//
+//    public function __construct()
+//    {
+//        $this->response = Http::withOptions([
+//            'base_uri' => env('API_URL'),
+//        ]);
+//    }
 
-    public function __construct()
+    /**
+     * Pull all the data in the request
+     *
+     * @param $page
+     *
+     * @return array|mixed
+     */
+    protected function pullPeopleSummary($page)
     {
-        $this->response = Http::withOptions([
-            'base_uri' => env('API_URL')
-        ]);
+        //Function makes the http request and returns the response from the swapi per page
+        $request  = Http::get(env('API_URL') . 'people/?page=' . $page);
+        $response = $request->json();
+
+        return $response;
+    }
+
+    /***
+     * Stores the planet data in the database with the given pagenumber
+     *
+     * @param $response
+     */
+    public function storePeopleData($response)
+    {
+        collect($response['results'])->each(function ($currData) {
+
+
+            $people_id = (int) filter_var($currData['url'], FILTER_SANITIZE_NUMBER_INT);
+            $homeworld = (int) filter_var($currData['homeworld'], FILTER_SANITIZE_NUMBER_INT);
+            $species   = (int) filter_var(isset($currData['species'][0]) ? $currData['species'][0] : null, FILTER_SANITIZE_NUMBER_INT);
+
+            $data             = People::query()->firstOrCreate(['planet_id' => $people_id]);
+            $data->people_id  = $people_id;
+            $data->name       = $currData['name'];
+            $data->birth_year = $currData['birth_year'];
+            $data->eye_color  = $currData['eye_color'];
+            $data->gender     = $currData['gender'];
+            $data->hair_color = $currData['hair_color'];
+            $data->height     = $currData['height'];
+            $data->mass       = $currData['mass'];
+            $data->skin_color = $currData['skin_color'];
+            $data->homeworld  = $homeworld;
+            $data->species    = $species;
+            $data->url        = $currData['url'];
+
+            $data->save();
+
+        });
     }
 
     /**
@@ -26,77 +76,20 @@ class PeopleController extends Controller
      */
     public function index()
     {
-        return view('peoples.index')->with('response', $this->response->get('people')->json());
+        $response = $this->pullPeopleSummary(2);
+        $numPages = $response['count'] / count($response['results']);
+        $this->storePeopleData($response);
+
+        for ($i = 2; $i < $numPages; $i++)
+        {            //start on 2, cause we already have fetched page 1
+            $response = $this->pullPeopleSummary($i);   //other pages
+            $this->storePeopleData($response);
+        }
+
+        die;
+
+
+        return view('people.index')->with('response', $this->response->body());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int                      $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

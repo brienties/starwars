@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Planet extends Model
+class Resident extends Model
 {
-    protected $fillable = ['planet_id'];
+    //
 }
