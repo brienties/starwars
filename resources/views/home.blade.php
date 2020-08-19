@@ -14,11 +14,41 @@
                         </div>
                     @endif
 
+                        <form method="POST" action="{{ route('species.index') }}">
+                            @csrf
+                            <div class="form-group row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ __('Update Species') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <form method="POST" action="{{ route('planets.index') }}">
+                            @csrf
+                            <div class="form-group row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ __('Update Planets') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form method="POST" action="{{ route('people.index') }}">
+                            @csrf
+                            <div class="form-group row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ __('Update People') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+
                         <ul>
-                            <li><a href="{{ route('home') }}">Home</a></li>
-                            <li><a href="{{ route('peoples.index') }}">Peoples</a></li>
-                            <li><a href="{{ route('planets.index') }}">PLanets</a></li>
-                            <li><a href="{{ route('species.index') }}">Species</a></li>
+                            <li><a href="{{ route('layouts.overview.index') }}">Overzicht</a></li>
                         </ul>
                 </div>
             </div>

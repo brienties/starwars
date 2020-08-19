@@ -73,24 +73,24 @@ class PeopleController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function index()
+    public function updatePeople()
     {
         $response = $this->pullPeopleSummary(1);
-//        dd($response);
-        $numPages = $response['count'] / count($response['results']);
-        $this->storePeopleData($response);
-
-        for ($i = 2; $i < $numPages; $i++)
-        {            //start on 2, cause we already have fetched page 1
-            $response = $this->pullPeopleSummary($i);   //other pages
+        if(!empty($response))
+        {
+            $numPages = ceil($response['count'] / count($response['results']));
             $this->storePeopleData($response);
+
+            for ($i = 2; $i <= $numPages; $i++)
+            {            //start on 2, cause we already have fetched page 1
+                $response = $this->pullPeopleSummary($i);   //other pages
+                $this->storePeopleData($response);
+            }
         }
 
-        die;
-
-        return view('people.index')->with('response', $this->response->body());
+        return redirect()->route('home');
     }
 
 }

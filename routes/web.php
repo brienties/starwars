@@ -23,9 +23,14 @@ Auth::routes(['register' => false]);
 Route::group(['middleware' => 'auth'], function()
 {
     Route::get('/home', 'HomeController@index')->name('home');
-    Route::get('/people', "PeopleController@index")->name('people.index');
-    Route::get('/planets', "PlanetController@index")->name('planets.index');
-    Route::get('/species', "SpeciesController@index")->name('species.index');
+    Route::post('/people', "PeopleController@updatePeople")->name('people.index');
+    Route::post('/planets', "PlanetController@updatePlanets")->name('planets.index');
+    Route::post('/species', "SpeciesController@updateSpecies")->name('species.index');
+
+
+    Route::get('/overview', "OverviewController@index")->name('layouts.overview.index');
+
+
 });
 
 

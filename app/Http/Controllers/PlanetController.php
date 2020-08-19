@@ -61,35 +61,30 @@ class PlanetController extends Controller
 
             $data->save();
 
-//            collect($currData['updates'])->each(function ($update) use ($currData) {
-//                $updateRow                  = Update::query()->firstOrCreate(['update_id' => $update['update_id']]);
-//                $updateRow->ticket_id       = $currData['id'];
-//                $updateRow->assignee_change = $update['assignee_change'];
-//            });
         });
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function index()
+    public function updatePlanets()
     {
         $response = $this->pullPlanetSummary(1);
-        $numPages = $response['count'] / count($response['results']);
-        $this->storePlanetData($response);
 
-        for ($i = 2; $i < $numPages; $i++)
-        {            //start on 2, cause we already have fetched page 1
-            $response = $this->pullPlanetSummary($i);   //other pages
+        if(!empty($response))
+        {
+            $numPages = ceil($response['count'] / count($response['results']));
             $this->storePlanetData($response);
+
+            for ($i = 2; $i <= $numPages; $i++)
+            {            //start on 2, cause we already have fetched page 1
+                $response = $this->pullPlanetSummary($i);   //other pages
+                $this->storePlanetData($response);
+            }
         }
 
-        die;
-
-        dd($data['results'][0]['name']);
-
-        return view('planets.index')->with('response', $this->response->body());
+        return redirect()->route('home');
     }
 }
