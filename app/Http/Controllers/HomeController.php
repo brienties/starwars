@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\People;
+use App\Planet;
+use App\Species;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        //Check if the people is empty
+        $people = People::count();
+
+        //Check if the people is empty
+        $species = Species::count();
+
+        //Check if the people is empty
+        $planets = Planet::count();
+
+        return view('home', array(
+            'people' => $people,
+            'species' => $species,
+            'planets' => $planets
+        ));
     }
 }

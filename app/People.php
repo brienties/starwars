@@ -15,7 +15,7 @@ class People extends Model
      */
     public function homeworlds()
     {
-        return $this->belongsTo('App\Planet', 'planet_id', 'homeworld');
+        return $this->hasOne('App\Planet', 'planet_id', 'homeworld');
     }
 
     /**
@@ -25,6 +25,6 @@ class People extends Model
      */
     public function species()
     {
-        return $this->belongsTo('App\Species', 'species_id', 'species');
+        return $this->hasOne('App\Species', 'species_id', 'species');
     }
 }

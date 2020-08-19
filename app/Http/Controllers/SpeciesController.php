@@ -2,24 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Species;
 
 class SpeciesController extends Controller
 {
-
-    /**
-     * @var \Illuminate\Http\Client\PendingRequest
-     */
-    private $response;
-
-    public function __construct()
-    {
-        $this->response = Http::withOptions([
-            'base_uri' => env('API_URL'),
-        ]);
-    }
 
     /**
      * Pull all the data in the request

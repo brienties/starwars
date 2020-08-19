@@ -13,6 +13,5 @@ class OverviewController extends Controller
         // Get all the data, starting point is persons.
         $person = People::all();
         return view('layouts.overview.index')->with('overview', $person);
-
     }
 }

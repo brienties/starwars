@@ -2,23 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Planet;
 
 class PlanetController extends Controller
 {
-
-//    /**
-//     * @var \Illuminate\Http\Client\Response
-//     */
-//    private $response;
-//
-//    public function __construct()
-//    {
-//        $this->response = Http::get(env('API_URL') . 'planets');
-//    }
-
     /**
      * Pull all the data in the request
      *
@@ -43,7 +31,6 @@ class PlanetController extends Controller
     public function storePlanetData($response)
     {
         collect($response['results'])->each(function ($currData) {
-
 
             $planet_id = (int) filter_var($currData['url'], FILTER_SANITIZE_NUMBER_INT);
 
