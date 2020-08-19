@@ -2,25 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Http;
 use App\Planet;
 
 class PlanetController extends Controller
 {
     /**
-     * Pull all the data in the request
-     *
-     * @param $page
-     *
-     * @return array|mixed
+     * @var \App\Http\Controllers\ImportApiDataController
      */
-    protected function pullPlanetSummary($page)
-    {
-        //Function makes the http request and returns the response from the swapi per page
-        $request  = Http::get(env('API_URL') . 'planets/?page=' . $page);
-        $response = $request->json();
+    public $importapidata;
 
-        return $response;
+    public function __construct()
+    {
+        $this->importapidata = new ImportApiDataController;
     }
 
     /***
@@ -47,7 +40,6 @@ class PlanetController extends Controller
             $data->url             = $currData['url'];
 
             $data->save();
-
         });
     }
 
@@ -58,16 +50,16 @@ class PlanetController extends Controller
      */
     public function updatePlanets()
     {
-        $response = $this->pullPlanetSummary(1);
+        $response = $this->importapidata->pullSummary('planets', 1);
 
-        if(!empty($response))
+        if ( ! empty($response))
         {
             $numPages = ceil($response['count'] / count($response['results']));
             $this->storePlanetData($response);
 
             for ($i = 2; $i <= $numPages; $i++)
             {            //start on 2, cause we already have fetched page 1
-                $response = $this->pullPlanetSummary($i);   //other pages
+                $response = $response = $this->importapidata->pullSummary('planets', $i);   //other pages
                 $this->storePlanetData($response);
             }
         }

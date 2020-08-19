@@ -2,26 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Http;
 use App\People;
 
 class PeopleController extends Controller
 {
 
     /**
-     * Pull all the data in the request
-     *
-     * @param $page
-     *
-     * @return array|mixed
+     * @var \App\Http\Controllers\ImportApiDataController
      */
-    protected function pullPeopleSummary($page)
-    {
-        //Function makes the http request and returns the response from the swapi per page
-        $request  = Http::get(env('API_URL') . 'people/?page=' . $page);
-        $response = $request->json();
+    public $importapidata;
 
-        return $response;
+    public function __construct()
+    {
+        $this->importapidata = new ImportApiDataController;
     }
 
     /***
@@ -65,15 +58,15 @@ class PeopleController extends Controller
      */
     public function updatePeople()
     {
-        $response = $this->pullPeopleSummary(1);
-        if(!empty($response))
+        $response = $this->importapidata->pullSummary('people', 1);
+        if ( ! empty($response))
         {
             $numPages = ceil($response['count'] / count($response['results']));
             $this->storePeopleData($response);
 
             for ($i = 2; $i <= $numPages; $i++)
             {            //start on 2, cause we already have fetched page 1
-                $response = $this->pullPeopleSummary($i);   //other pages
+                $response = $this->importapidata->pullSummary('people', $i);   //other pages
                 $this->storePeopleData($response);
             }
         }
