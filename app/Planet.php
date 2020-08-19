@@ -10,6 +10,6 @@ class Planet extends Model
 
     public function People()
     {
-        return $this->belongsTo('App\People');
+        return $this->hasMany('App\People', 'homeworld', 'planet_id');
     }
 }

@@ -16,7 +16,7 @@ composer update
 
 Change the .env so that the database is connected correctly and add the following
 
-```bash
+```
 API_URL = 'https://swapi.dev/api/'
 ```
 
@@ -31,20 +31,20 @@ php artisan db:seed
 
 Serve the project or make an alias
 
-```bash
+```
 php artisan serve
 ```
 
 Go to your localhost Laraval installation in your webbrowser and Login with the following credentials
 
-```bash
+```
 Username: Luke
 Password: demo
 ```
 
 After logging in, fill the databases with the following buttons:
 
-```bash
+```
 Update Species
 Update Planets
 Update People

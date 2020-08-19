@@ -28,7 +28,9 @@ Route::group(['middleware' => 'auth'], function()
     Route::post('/species', "SpeciesController@updateSpecies")->name('species.index');
 
 
+
     Route::get('/overview', "OverviewController@index")->name('layouts.overview.index');
+    Route::post('/overview', "SearchPeopleController@searchPerson")->name('layouts.overview.index');
 
 
 });

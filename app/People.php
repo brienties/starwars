@@ -11,7 +11,7 @@ class People extends Model
     /**
      * Get the homeworld from the planets
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function homeworlds()
     {
@@ -21,7 +21,7 @@ class People extends Model
     /**
      * Get the Species
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function species()
     {
