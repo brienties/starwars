@@ -34,3 +34,6 @@ Homestead.json
 # Laravel IDE helper
 *.meta.*
 _ide_*
+
+# PHP Storm Idea helper
+/.idea
