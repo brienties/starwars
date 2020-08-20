@@ -9,13 +9,8 @@ class SearchPeopleController extends Controller
 {
     public function searchPerson(Request $request)
     {
+        $result  = Http::get(env('API_URL') . 'people/?search='. $request->name);
 
-//        https://swapi.dev/api/people/?search=r2
-
-        $result  = Http::get(env('API_URL') . 'people/?search=r2');
-
-        print_r($result);
-        die;
-
+        return $result->json();
     }
 }

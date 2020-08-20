@@ -54,17 +54,6 @@ class SpeciesController extends Controller
     public function updateSpecies()
     {
         $response = $this->importapidata->pullSummary('species', 1);
-        if ( ! empty($response))
-        {
-            $numPages = ceil($response['count'] / count($response['results']));
-            $this->storeSpeciesData($response);
-
-            for ($i = 2; $i <= $numPages; $i++)
-            {            //start on 2, cause we already have fetched page 1
-                $response = $this->importapidata->pullSummary('species', $i);   //other pages
-                $this->storeSpeciesData($response);
-            }
-        }
 
         return redirect()->route('home');
     }
