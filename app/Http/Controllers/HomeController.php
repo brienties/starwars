@@ -7,6 +7,10 @@ use App\People;
 use App\Planet;
 use App\Species;
 
+/**
+ * Class HomeController
+ * @package App\Http\Controllers
+ */
 class HomeController extends Controller
 {
     /**
@@ -26,14 +30,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         //Check if the people is empty
         $people = People::count();
 
-        //Check if the people is empty
+        //Check if the species are empty
         $species = Species::count();
 
-        //Check if the people is empty
+        //Check if the planets are empty
         $planets = Planet::count();
 
         return view('home', array(

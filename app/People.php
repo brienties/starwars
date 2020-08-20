@@ -4,12 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class People
+ * @package App
+ */
 class People extends Model
 {
     protected $fillable = ['people_id'];
 
     /**
-     * Get the homeworld from the planets
+     * Get the homeworld from the planets - People has normaly one homeworld
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -19,7 +23,7 @@ class People extends Model
     }
 
     /**
-     * Get the Species
+     * Get the Species - People has normaly one species
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */

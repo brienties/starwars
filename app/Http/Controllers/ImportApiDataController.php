@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 
+/**
+ * Class ImportApiDataController
+ * @package App\Http\Controllers
+ */
 class ImportApiDataController extends Controller
 {
     /**
-     * Pull all the data in the request
+     * Pull all the data in the request and send it to the search api endpoint
      *
      * @param $endpoint
      * @param $page
