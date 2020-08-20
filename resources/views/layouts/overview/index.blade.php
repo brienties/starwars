@@ -12,9 +12,9 @@
                             @csrf
                             <div class="form-group mx-sm-3 mb-2">
                                 <label for="name" class="sr-only">Password</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Naam">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Name">
                             </div>
-                            <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+                            <button type="submit" class="btn btn-primary mb-2">Search name</button>
                         </form>
 
                         <table class="table">
