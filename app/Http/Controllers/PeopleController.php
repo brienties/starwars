@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\People;
 
+/**
+ * Class PeopleController
+ * @package App\Http\Controllers
+ */
 class PeopleController extends Controller
 {
 
@@ -12,6 +16,9 @@ class PeopleController extends Controller
      */
     public $importapidata;
 
+    /**
+     * PeopleController constructor.
+     */
     public function __construct()
     {
         $this->importapidata = new ImportApiDataController;
@@ -52,7 +59,7 @@ class PeopleController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Activate the data pull and loop trough the pages
      *
      * @return \Illuminate\Http\RedirectResponse
      */

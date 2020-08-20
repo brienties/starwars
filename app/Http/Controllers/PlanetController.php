@@ -44,7 +44,7 @@ class PlanetController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Activate the data pull and loop trough the pages
      *
      * @return \Illuminate\Http\RedirectResponse
      */
